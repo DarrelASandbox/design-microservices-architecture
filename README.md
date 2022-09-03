@@ -1,3 +1,24 @@
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li><a href="#about-the-project">About The Project</a></li>
+    <li><a href="#introduction">Introduction</a>
+      <ol>
+        <li><a href="#course-target">Course Target</a></li>
+        <li><a href="#use-cases---e-commerce-domain">Use Cases - E-Commerce Domain</a></li>
+      </ol>
+    </li>
+    <li><a href="#monolithic-architecture">Monolithic Architecture</a>
+      <ol>
+        <li><a href="#scalability">Scalability</a></li>
+        <li><a href="#deployments">Deployments</a></li>
+      </ol>
+    </li>
+    <li><a href="#layered-n-layer-architecture">Layered (N-Layer) Architecture</a>
+</details>
+
+&nbsp;
+
 ## About The Project
 
 - Design Microservices Architecture with Patterns & Principles
@@ -74,6 +95,12 @@
 |       100K       |       80K       |      <= 2 Sec      |
 |       500K       |      300K       |         ?          |
 
+&nbsp;
+
+---
+
+&nbsp;
+
 ## Monolithic Architecture
 
 - User Interface -> Business Logic -> Data Access -> DB
@@ -93,3 +120,112 @@
   - Simple to Deploy
   - Troubleshoot
   - Scale vertically (scale up)
+
+![monolithic_architecture](/diagrams/monolithic_architecture.png)
+
+- Simply to:
+  - develop
+  - deploy
+  - scale
+
+![reference_architecture1](/diagrams/reference_architecture1.png)
+
+&nbsp;
+
+![reference_architecture2](/diagrams/reference_architecture2.png)
+
+&nbsp;
+
+![reference_architecture3](/diagrams/reference_architecture3.png)
+
+- Design principles
+  - <b>DRY:</b> Don’t Repeat Yourself
+  - <b>KISS:</b> Keep It Simple, Stupid
+  - <b>YAGNI:</b> You Ain’t Gonna Need It
+- Communication
+  - Inter-Process Communication (Transaction Management)
+    - Single database of the whole application
+    - Simply commit and rollback operations
+
+```
+function place_order()
+  do_payment
+  decrease_stock
+  send_shipment
+  generate_bill
+  update_order
+```
+
+- Same server with all modules
+- Processes to communicate with each other by method calls into the code
+
+### Scalability
+
+- [Webairy - horizontal and vertical scaling](https://www.webairy.com/horizontal-and-vertical-scaling/)
+- The number of requests an application can handle
+- To prevent downtime, and reduce latency, you must scale
+- <b>Vertical Scaling</b>
+  - Vertical scaling by adding more power
+  - Makes the nodes stronger
+  - Adding more computing power
+  - Same code on machines with better specs
+  - Adding additional CPU, RAM, and DISK
+  - Increase power since to hardware limitations when you reach the maximum capacity
+- <b>Horizontal scaling</b>
+  - Horizontal scaling by adding more machines
+  - Splitting the load between different servers
+  - Adds more instances of machines
+  - Share the processing power
+  - Gives you scalability but also reliability
+  - Stateful or Stateless
+  - CAP Theorem
+
+![horizontal_and_vertical_scaling](/diagrams/horizontal_and_vertical_scaling.jpg)
+
+- Load Balancer
+  - Balance the traffic
+  - Spread the traffic across a cluster
+  - Consistent hashing algorithms
+
+### Deployments
+
+- Single code base
+- Affects the whole system
+- Not reliable
+- Expensive and risky
+
+![deployments_for_monolithic_architecture](/diagrams/deployments_for_monolithic_architecture.png)
+
+&nbsp;
+
+---
+
+&nbsp;
+
+## Layered (N-Layer) Architecture
+
+- [Medium - Layered (N-Layer) Architecture](https://medium.com/design-microservices-architecture-with-patterns/layered-n-layer-architecture-e15ffdb7fa42)
+- Presentation tier, for example, a web app.
+- Business tier, including use case implementations
+- A data tier, such as a SQL database.
+
+![layered_architecture](diagrams/layered_architecture.png)
+
+- Design principles
+  - <b>Separation of Concerns (SoC)</b>
+    - Elements in the software should be unique
+    - Separate responsibilities
+    - Limits to allocate Responsibilities
+    - Low-coupling, high-cohesion
+  - [<b>SOLID</b>](https://medium.com/bgl-tech/what-are-the-solid-design-principles-c61feff33685)
+    - Single Responsibility Principle
+    - Open-Closed Principle
+    - Liskov Substitution Principle
+    - Interface Segregation Principle
+    - Dependency Inversion Principle
+
+&nbsp;
+
+---
+
+&nbsp;
