@@ -15,6 +15,8 @@
       </ol>
     </li>
     <li><a href="#layered-n-layer-architecture">Layered (N-Layer) Architecture</a>
+    <li><a href="#service-oriented-architecture">Service-Oriented Architecture</a>
+    <li><a href="#microservices-architecture">Microservices Architecture</a>
 </details>
 
 &nbsp;
@@ -138,7 +140,7 @@
 
 ![reference_architecture3](/diagrams/reference_architecture3.png)
 
-- Design principles
+- <b>Design principles</b>
   - <b>DRY:</b> Don’t Repeat Yourself
   - <b>KISS:</b> Keep It Simple, Stupid
   - <b>YAGNI:</b> You Ain’t Gonna Need It
@@ -211,7 +213,7 @@ function place_order()
 
 ![layered_architecture](diagrams/layered_architecture.png)
 
-- Design principles
+- <b>Design principles</b>
   - <b>Separation of Concerns (SoC)</b>
     - Elements in the software should be unique
     - Separate responsibilities
@@ -223,6 +225,135 @@ function place_order()
     - Liskov Substitution Principle
     - Interface Segregation Principle
     - Dependency Inversion Principle
+
+&nbsp;
+
+---
+
+&nbsp;
+
+## Service-Oriented Architecture
+
+- [Medium - Service-Oriented Architecture](https://medium.com/design-microservices-architecture-with-patterns/service-oriented-architecture-1e4716fbca17)
+- [Oracle - Service-Oriented Architecture](https://docs.oracle.com/cd/E13171_01/alsb/docs30/concepts/introduction.html)
+- Service components
+- Communicates over the network
+- Converged service Infrastructure
+- Enterprise applications
+
+![service_oriented_architecture](diagrams/service_oriented_architecture.png)
+
+- <b>Enterprise Service Bus (ESB)</b>
+  - Integrations between applications
+  - Transformations of data models
+  - Middleware messaging components
+  - Service orchestration
+  - Increased complexity and introduced bottlenecks
+- <b>Communication</b>
+  - Enterprise service bus - ESB systems.
+  - Handles connectivity and messaging, performs routing
+  - Inter-service communication
+  - SOAP-based web services
+  - SOAP, WSDL, and XSD
+
+![enterprise_service_bus](/diagrams/enterprise_service_bus.png)
+
+- <b>Comparing SOA and Microservices</b>
+  - Inter-service communication due to distributed services
+    - SOA uses Enterprise Service Bus
+    - Microservices uses message brokers
+  - Size of the services different
+    - SOA is typically use for integrating large, complex, monolithic applications
+    - All the services in Microservices are almost always much smaller
+  - ESB middleware expensive
+
+&nbsp;
+
+---
+
+&nbsp;
+
+## Microservices Architecture
+
+- [Medium - Microservices Architecture](https://medium.com/design-microservices-architecture-with-patterns/microservices-architecture-2bec9da7d42a)
+- <b>What are Microservices?</b>
+  - Small services
+  - Running in its own process
+  - Communicating with APIs
+  - Independently deployable
+  - Different programming languages
+  - Own technology stack
+  - Decouple microservices with bounded context
+
+![what_are_microservices](/diagrams/what_are_microservices.png)
+
+- [<b>Characteristics</b>](https://martinfowler.com/articles/microservices.html)
+  - Componentization via Services
+  - Organized by Business Capabilities
+  - Products not Projects
+  - Smart endpoints and dumb pipes
+  - Decentralized Governance
+  - Decentralized Data Management
+  - Infrastructure Automation
+  - Design for failure
+- <b>Benefits</b>
+  - Agility
+  - Small, focused teams
+  - Small and separated code base
+  - Right tool for the job
+  - Adapting Technology changes
+  - Fault isolation
+  - Scalability
+  - Data isolation
+- <b>Challenges</b>
+  - Complexity
+  - Network problems and Latency
+  - Development and testing
+  - Data integrity
+- <b>Pros & Cons</b>
+  - Independent Services
+  - Better scalability
+  - Technology Diversity
+  - Agility
+  - Small, focused teams
+  - Challenge of management and traceability
+
+![monolithic_vs_microservices](/diagrams/monolithic_vs_microservices.png)
+
+&nbsp;
+
+![monolithic_vs_microservices_deployment](/diagrams/monolithic_vs_microservices_deployment.png)
+
+- <b>The Database-per-Service Pattern</b>
+  - Loose coupling of services
+  - Own databases
+  - Polygot persistence
+  - Can’t be accessed directly
+  - Scale independently
+  - Data encapsulated within the service
+  - Not affect to other services
+
+![the_database_per_service_pattern](/diagrams/the_database_per_service_pattern.png)
+
+&nbsp;
+
+- [Future Fundamentals - What is Microservices Architecture?](https://www.futurefundamentals.com/what-is-microservices-architecture/)
+- [Feras' Blog - Microservices Architecture: To Be Or Not To Be](https://feras.blog/microservices-architecture-to-be-or-not-to-be/)
+- [Microsoft - Introducing eShopOnContainers reference app](https://docs.microsoft.com/en-us/dotnet/architecture/cloud-native/introduce-eshoponcontainers-reference-app)
+
+![reference_microservice_architecture1](/diagrams/reference_microservice_architecture1.png)
+
+&nbsp;
+
+![reference_microservice_architecture2](/diagrams/reference_microservice_architecture2.png)
+
+&nbsp;
+
+![reference_microservice_architecture3](/diagrams/reference_microservice_architecture3.png)
+
+&nbsp;
+
+![reference_microservice_architecture4](/diagrams/reference_microservice_architecture4.png)
 
 &nbsp;
 
