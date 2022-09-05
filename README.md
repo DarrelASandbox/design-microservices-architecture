@@ -31,6 +31,8 @@
         <li><a href="#distributed-transactions">Distributed Transactions</a></li>
         <li><a href="#event-driven">Event-Driven</a></li>
         <li><a href="#distributed-caching">Distributed Caching</a></li>
+        <li><a href="#deployments_with_containers_and_orchestrators">Deployments with Containers and Orchestrators</a></li>
+        <li><a href="#implementation">Implementation</a></li>
       </ol>
     </li>
 </details>
@@ -1579,6 +1581,35 @@ function place_order()
 - Separating the cache server scale independently
 
 ![distributed_caching](/diagrams/distributed_caching.png)
+
+&nbsp;
+
+---
+
+&nbsp;
+
+### Deployments with Containers and Orchestrators
+
+- [<b>Microservices Deployments with Containers and Orchestrators</b>](https://medium.com/design-microservices-architecture-with-patterns/microservices-deployments-with-containers-and-orchestrators-c693292997f9)
+- Monolithic deployment problems; single unit of deploy whole application
+- Containers provide to decouple applications with all dependencies and isolate applications
+- With containers, microservices can deployed separately in a container
+- New features can be applied and rollback very easy with container deployments.
+- Docker is defacto standard for containerization of microservices
+- <b>Orchestrators</b>
+  - Containers need to orchestrate in order to manage lots of container in your application cluster
+  - Orchestrators automates the deployment, scaling, and operational concerns of containerized workloads across clusters
+  - Kubernetes is defacto standard for orchestration of microservices.
+
+&nbsp;
+
+---
+
+&nbsp;
+
+### Implementation
+
+- [GitHub - aspnetrun](https://github.com/aspnetrun/run-aspnetcore-microservices)
 
 &nbsp;
 
