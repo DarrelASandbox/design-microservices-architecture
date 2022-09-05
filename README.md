@@ -28,6 +28,9 @@
         <li><a href="#scaling">Scaling</a></li>
         <li><a href="#data-management">Data Management</a></li>
         <li><a href="#data-management-queries">Data Management Queries</a></li>
+        <li><a href="#distributed-transactions">Distributed Transactions</a></li>
+        <li><a href="#event-driven">Event-Driven</a></li>
+        <li><a href="#distributed-caching">Distributed Caching</a></li>
       </ol>
     </li>
 </details>
@@ -1457,6 +1460,125 @@ function place_order()
   - Does not guarantee instant consistency
   - Consider the "consistency level“
   - Strict consistency or Eventual consistency
+
+&nbsp;
+
+---
+
+&nbsp;
+
+### Distributed Transactions
+
+- [Medium - Microservices Distributed Transactions](https://medium.com/design-microservices-architecture-with-patterns/microservices-distributed-transactions-a71a996e5db8)
+- Implement transactional operations across several microservices
+- Complex network concerns with polyglot database on microservices
+- Distributed transaction managements on microservices implement manually
+
+![distributed_transaction](/diagrams/distributed_transaction.png)
+
+&nbsp;
+
+![distributed_transaction_rollback](/diagrams/distributed_transaction_rollback.png)
+
+- [<b>Saga Pattern for Distributed Transactions</b>](https://medium.com/design-microservices-architecture-with-patterns/saga-pattern-for-microservices-distributed-transactions-7e95d0613345)
+  - Manage data consistency across microservices in distributed transaction cases
+  - Create a set of transactions that update microservices sequentially
+  - Publish events to trigger the next transaction
+  - If failed, trigger to rollback transactions
+  - Grouping these local transactions and sequentially invoking one by one
+  - Saga implementation ways
+    - Choreography
+    - Orchestration
+
+![distributed_transaction_saga_pattern](/diagrams/distributed_transaction_saga_pattern.png)
+
+&nbsp;
+
+---
+
+&nbsp;
+
+> <b>Abdus Salam: </b>What will be the solution for payment failure in the saga pattern? As payment is done by debit/credit card whose server is not connected with my microservice. And the payment is already deducted from the card or account. How the bank will get this notification?
+
+> <b>Mehmet: </b>There should be compensate integration between Payment provider and your microservices that you can invoke in case of failure or rollback issues.
+
+&nbsp;
+
+---
+
+&nbsp;
+
+- <b>Choreography Saga Pattern</b>
+  - Coordinate sagas with applying publish-subscribe principles
+  - Each microservices run its own local transaction
+  - Publish events to trigger the next transaction
+  - Workflow steps increase, then it can become confusing and hard to manage transaction
+  - Decouple direct dependency
+
+![choreography_way_of_saga_pattern](/diagrams/choreography_way_of_saga_pattern.png)
+
+- <b>Orchestration Saga Pattern</b>
+  - Coordinate sagas with a centralized controller microservice
+  - Invoke to execute local microservices transactions in sequentially
+  - Execute saga transaction and manage them in centralized way and if one of the step is failed, then executes rollback steps with compensating transactions
+  - Good for complex workflows which includes lots of steps
+
+![orchestration_way_of_saga_pattern](/diagrams/orchestration_way_of_saga_pattern.png)
+
+- [<b>The Outbox Pattern</b>](https://itnext.io/the-outbox-pattern-in-event-driven-asp-net-core-microservice-architectures-10b8d9923885)
+- [The Outbox Pattern in Event-Driven ASP.NET Core Microservice Architectures](https://itnext.io/the-outbox-pattern-in-event-driven-asp-net-core-microservice-architectures-10b8d9923885)
+  - When your API publishes event messages, it doesn’t directly send them
+  - The messages are persisted in a database table, a job publish events to message broker system
+  - Provides to publish events reliably with written to a table in the "outbox" role
+  - The event and the event written to the outbox table are part of the same transaction
+
+![the_outbox_pattern](/diagrams/the_outbox_pattern.png)
+
+- <b>Why we use Outbox Pattern?</b>
+  - Working with critical data that need to consistent
+  - Need to accurate to catch all requests
+  - The database update and sending of the message should be atomic
+  - Provide data consistency
+  - Example - Financial business sale transactions
+
+&nbsp;
+
+---
+
+&nbsp;
+
+### Event-Driven
+
+- Communicating with microservices via event messages
+- Publish/subscriber pattern and Kafka message broker systems
+- Asynchronous behavior and loosely coupled
+- Real-time messaging platforms, stream-processing, event hubs, real-time processing, batch processing, data intelligence
+
+![event_hub](/diagrams/event_hub.png)
+
+- Example
+  - E-commerce application we have microservices: customer, order, payment and products
+  - A customer creates an order the customer and receives a payment request
+  - If the payment is successful, the stock is updated and the order is delivered
+  - If the payment is not successful, rollback the order and set order status is not completed.
+
+&nbsp;
+
+---
+
+&nbsp;
+
+### Distributed Caching
+
+- [<b>Microservices Distributed Caching</b>](https://medium.com/design-microservices-architecture-with-patterns/microservices-distributed-caching-76828817e41b)
+- Caching makes application faster
+- Increase performance, scalability, and availability
+- Reducing latency with cache when reading data
+- Avoid re-calculation processes
+- The distributed cache increases system responsiveness by returning cached data
+- Separating the cache server scale independently
+
+![distributed_caching](/diagrams/distributed_caching.png)
 
 &nbsp;
 
