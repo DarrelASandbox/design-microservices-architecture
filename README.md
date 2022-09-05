@@ -26,6 +26,7 @@
         <li><a href="#kafka-architecture">Kafka Architecture</a></li>
         <li><a href="#rabbitmq-architecture">RabbitMQ Architecture</a></li>
         <li><a href="#scaling">Scaling</a></li>
+        <li><a href="#data-management">Data Management</a></li>
       </ol>
     </li>
 </details>
@@ -1041,6 +1042,268 @@ function place_order()
   - Eventual consistency
   - Spliting database servers
   - Database Sharding
+
+&nbsp;
+
+---
+
+&nbsp;
+
+### Data Management
+
+- [Medium - Microservices Data Management](https://medium.com/design-microservices-architecture-with-patterns/microservices-data-management-3235893b7c29)
+- <b>Polyglot Persistence Microservices</b>
+  - Data integrity and data consistency
+  - Database-per-service its own data
+  - Isolating each service's databases
+  - Polyglot Persistence principle
+  - Duplicated or partitioned data challenge
+  - Data consistency problems transaction management
+  - Welcome duplicate datas and eventual consistency
+  - Accept eventual consistency data
+  - Ability to scale independently
+  - Avoid single-point-of-failure of bottleneck databases
+  - Event driven architecture style
+
+![polyglot_persistence_microservices](/diagrams/polyglot_persistence_microservices.png)
+
+- <b>Database Management Patterns and Principles</b>
+  - Should have a strategy
+  - The Database-per-Service pattern
+  - The API Composition pattern
+  - The CQRS pattern
+  - The Event Sourcing pattern
+  - The Saga pattern
+  - The Shared Database anti-pattern
+- <b>API Composition patterns</b>
+  - Dispatches requests of multiple internal backend microservices
+  - API Gateway Pattern
+  - Gateway Routing pattern
+  - Gateway Aggregation pattern
+  - Gateway Offloading pattern
+
+![cqrs_design_pattern](/diagrams/cqrs_design_pattern.png)
+
+- <b>CQRS pattern</b>
+  - Command query responsibility segregation (CQRS)
+  - Separate commands and queries database
+  - Write-less, read-more approaches
+
+![event_sourcing_pattern](/diagrams/event_sourcing_pattern.png)
+
+- <b>Event Sourcing pattern</b>
+  - Accumulate events
+  - Aggregates them into sequence of events
+  - Replay at certain point of events
+
+![saga_pattern](/diagrams/saga_pattern.png)
+
+- <b>Saga pattern</b>
+  - Provide Transaction management
+  - Maintaining data consistency
+  - 2 types of SAGA
+  - Choreography – when exchanging events happens without points of control
+  - Orchestration – when you have centralized controllers
+
+![shared_database_anti_pattern](/diagrams/shared_database_anti_pattern.png)
+
+- <b>Shared Database anti-pattern</b>
+  - Shared Database
+  - Anti-pattern
+  - Single shared database with each service accessing data
+  - Against to microservices nature
+  - Big a few Monolithic applications
+
+![database_per_service_pattern](/diagrams/database_per_service_pattern.png)
+
+- <b>Database-per-Service pattern</b>
+  - Shifting to the monolithic architecture to microservices architecture
+  - Decomposes database into a distributed data model
+  - Evolve rapidly and easy to scale applications
+  - Schema changes can perform without any impact
+  - Scaling independently
+
+![polyglot_persistence](/diagrams/polyglot_persistence.png)
+
+- <b>Polyglot Persistence</b>
+  - Different kinds of data storing technologies
+  - Come with a cost
+  - Looked up page elements by ID inappropriately
+  - Better suited to a key-value no-sql databases
+  - How to Choose a Database for Microservices ?
+
+&nbsp;
+
+---
+
+&nbsp;
+
+> <b>Abdus Salam: </b>Is it compulsory to use database per service?
+
+> <b>Mehmet: </b>No its not compulsory but its best practice to follow when it comes to designing microservices architectures. Even microservice architectures you can share database servers for different microservices with different connections. So that tutor also right, but as far as I see on enterprise projects, they indented to create database per service. For my experience, I didnt see that kind of usage in microservice projects.
+
+&nbsp;
+
+---
+
+&nbsp;
+
+- <b>Relational Databases</b>
+  - Storing data into related data tables
+  - Fixed schema and use SQL to manage data
+  - Support transactions with ACID
+  - Polyglot persistence in microservices
+  - Oracle, MS SQL Server, MySQL & PostgreSQL
+- <b>No-SQL Database</b>
+  - Different types of stored data
+  - Ease-of-use, scalability, resilience, and availability
+  - Stores unstructured data in key-value pairs or JSON documents
+  - Don't provide ACID guarantees
+- <b>No-SQL Document Databases</b>
+  - Store and query data in JSON-based documents
+  - Data and metadata are stored hierarchically
+  - Objects are mapping to the application code
+  - Scalability, document databases can distributed very well
+  - Content management and storing catalogs, MongoDB and Cloudant
+- <b>No-SQL Key-Value Databases</b>
+  - Data is storing as a collection of key-value pairs
+  - Group of key-value in the database
+  - Session-oriented applications for example storing customer basket data
+  - Redis, Amazon DynamoDB, Oracle & NoSQL Database
+- <b>No-SQL Column-Based Databases</b>
+  - Wide-Column Databases
+  - Data is stored in columns
+  - Access necessary data faster
+  - Don’t scanning the unnecessary information
+  - Scale by columns independently
+  - Data warehouse and Big Data processing
+  - Apache Cassandra, Apache HBase or Amazon DynamoDB
+- <b>No-SQL Graph-Based Databases</b>
+  - Stores data in a graph structure
+  - Data entities are connected in nodes
+  - Navigate graph relationships
+  - Fraud detection, social networks, and recommendation engines
+  - OrientDB, Neo4j, and Amazon Neptune
+- <b>How to Choose a Database for Microservices</b>
+  - [Medium - How to Choose a Database for Microservices — CAP Theorem](https://medium.com/design-microservices-architecture-with-patterns/how-to-choose-a-database-for-microservices-cap-theorem-d1585bf40ecd)
+  - Key Point 1 - Consider the "consistency level“
+  - Do we need Strict Consistency or Eventual Consistency ?
+  - Eventual consistency in microservices architecture in order to gain scalability and high availability
+  - Key Point 2 - High Scalability - accommodate millions of request
+  - Key Point 3 - High Availability - separate data center
+  - Before deciding database, we should check the CAP Theorem
+
+![cap_theorem](/diagrams/cap_theorem.png)
+
+- <b>CAP Theorem</b>
+  - Found in 1998 by a Professor Eric Brewer
+  - Consistency, Availability, and Partition Tolerance cannot all be achieved at the same time
+  - Distributed systems should sacrifice between consistency, availability, and partition tolerance
+  - Can only guarantee two of the three concepts
+  - <b>Consistency, Availability & Partition Tolerance</b>
+    - Consistency - get any read request, the data should return last updated value
+    - Must block the request until all replicas update
+    - Availability - respond to requests at any time
+    - fault-tolerance in order to accommodate all requests
+    - Partition Tolerance - network partitioning, located in different networks
+  - <b>Consistency and Availability at the same time?</b>
+    - If Partition Tolerance, either Availability or Consistency should be selected
+    - Partition Tolerance is a must for distributed architectures
+    - Relational databases prevent distribute data from different nodes, NoSQL databases easily scalable.
+    - Microservices architectures choose Partition Tolerance with High Availability and follow Eventual Consistency
+
+&nbsp;
+
+---
+
+&nbsp;
+
+> <b>Robert: </b>Microservice communication
+>
+> I'm real confused about how one microservice communicates with another. You said it can be done through REST. Can you be more specific. I'm used to API Gatewayrouting to Lambda functions. But the API gateways are exposted to the public. I'm also familiar with node/express running on a server and a front-end accessing that. But if I just have two lambda functions, what do they need to do to be able to communicate? It would not make sense to go to a public facing API gateway. Is there an internal private API Gateway? Just need help with this concept.
+
+> <b>Mehmet: </b>We should start with clarify which world we are talking about. In this course, I am explaining containerize applications which deploy on container orchestrator tool like kubernetes.
+>
+> So in the cluster, container (microservice) communication can be done by sync or async way. In sync way, 1 ms expose an api and other is call this api with synchronously. But this is not recommended. To decouple microservices, best practice is decouple services with using event bus systems like rabbitmq and kafka. 1 ms send request to event bus another is consume in async way. Api gateway facilite these communication if we apply gateway routing and gateway aggregation patterns.
+>
+> If we talk about serverless world thing got some changes. Lambda has 3 communication type sync, async and long pooling. Normally 2 lambda function should not be communicate each other with sync way due to dynamic concurrency features. If you have that kind of request then you should use it in step functions.
+
+> <b>Robert: </b>is gRPC a method of long pooling?
+
+> <b>Mehmet: </b>No gRPC is a type of sync communication, actually its type of underlying network communication type. Long pooling is Lambda pool data from SQS or Amazon Kinesis and read from there in async mode but its not triggering, it pulls and get data async mode.
+
+&nbsp;
+
+---
+
+&nbsp;
+
+- <b>Scale Database in Microservices</b>
+  - Scaling databases in our microservices architecture
+  - Splitting database servers
+  - Database Sharding
+
+![horizontal_vertical_partioning](/diagrams/horizontal_vertical_partioning.png)
+
+- <b>Horizontal, Vertical, and Functional Data Partitioning</b>
+  - Split databases for scalability
+  - Data Partitioning Types:
+    - Horizontal Partitioning (often called sharding)
+    - Vertical Partitioning
+    - Functional Partitioning
+
+![horitzontal_partitioning_sharding](/diagrams/horitzontal_partitioning_sharding.png)
+
+- [<b>Horizontal Partitioning - Sharding</b>](https://hazelcast.com/glossary/sharding/)
+  - Each partition is a separate data store
+  - All partitions have the same schema
+  - Shards and holds a specific subset of the data
+  - Sharding keys organized alphabetically
+  - Sharding separate the load different servers with partition keys
+- [<b>Vertical Partitioning</b>](https://hazelcast.com/glossary/sharding/)
+  - Row Splitting
+  - Holds a subset of the columns for table
+  - Columns are divided according to their pattern
+  - Frequently accessed columns
+- <b>Functional partitioning</b>
+  - Functionally partitioning data by following the bounded context or subdomains
+  - Data is segregated according to usage of bounded contexts
+  - Like decomposing microservices as per responsibilities
+- <b>Database Sharding Pattern</b>
+  - Sharding - "a small piece or part“
+  - Separation of the data into unique small pieces
+  - Improve scalability when storing data in microservices
+  - Each shard has the same schema
+  - Shardings enable to scale, improve performance by balancing the workload across shards
+  - Dividing into shards with partition keys
+- <b>Tinder - Database Sharding Pattern</b>
+  - Match and meet other people around 160km based on location
+  - Find people near you very quickly
+  - GeoSharding - location-based database sharding
+  - Dividing the world map into boxes with their locations
+- <b>Cassandra No-Sql Database</b>
+  - Peer-to-Peer Distributed Wide Column Database
+  - Distributed database from Apache Foundation, highly scalable, high-performance distributed database
+  - High availability with no single point of failure
+  - Elastic scalability
+  - No single point of failure
+  - Flexible data storage, Easy data distribution
+
+![cassandra_architecture](/diagrams/cassandra_architecture.png)
+
+- <b>Cassandra Architecture</b>
+  - Peer-to-peer distributed system across the nodes in a cluster
+  - Master-Master (Master- Less) architecture
+  - Every Cassandra Node has the same role
+
+![cassandra_partition](/diagrams/cassandra_partition.png)
+
+- <b>Why Cassandra?</b>
+  - Auto-sharding feature
+  - Data Sharding helps keep data divided among nodes
+  - Partition Keys set to Sensor# and Date
+  - Best choose for microservices database
+  - CAP Theorem High Availability with Eventual Consistency
 
 &nbsp;
 
