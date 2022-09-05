@@ -27,6 +27,7 @@
         <li><a href="#rabbitmq-architecture">RabbitMQ Architecture</a></li>
         <li><a href="#scaling">Scaling</a></li>
         <li><a href="#data-management">Data Management</a></li>
+        <li><a href="#data-management-queries">Data Management Queries</a></li>
       </ol>
     </li>
 </details>
@@ -1304,6 +1305,158 @@ function place_order()
   - Partition Keys set to Sensor# and Date
   - Best choose for microservices database
   - CAP Theorem High Availability with Eventual Consistency
+
+&nbsp;
+
+---
+
+&nbsp;
+
+### Data Management Queries
+
+- [Medium - Microservices Data Management when performing Queries between Services](https://medium.com/design-microservices-architecture-with-patterns/microservices-data-management-when-performing-queries-between-services-42896a733567)
+- <b>Cross-Service Queries</b>
+  - Perform queries across microservices
+  - Monolithic easy to query due to single database
+  - Microservices polyglot persistence
+  - Query request to internal microservices
+  - Microservices are independent
+
+![microservices_cross_service_queries1](/diagrams/microservices_cross_service_queries1.png)
+
+- <b>Cross Query Solutions</b>
+  - Perform queries across microservices database level in data stores
+  - API Gateway patterns, Service Aggregator pattern
+  - Add a product into the user's shopping cart with get data Catalog and Pricing microservice
+  - Reducing independency of microservices and makes chatty communications
+
+![microservices_cross_service_queries2](/diagrams/microservices_cross_service_queries2.png)
+
+- [<b>Materialized View Pattern</b>](https://medium.com/design-microservices-architecture-with-patterns/materialized-view-pattern-f29ea249f8f8)
+  - Store its own local copy of data
+  - Contains a denormalized copy of the data
+  - Local copy of data as a Read Model
+  - Shopping Basket microservice contains a denormalized copy of the data which product and pricing microservices
+  - Eliminates the synchronous cross-service calls
+  - Drawbacks
+    - How and when the denormalized data will be updated?
+    - Source of data is other microservices
+    - When the original data changes it should update into sc microservices
+    - Publish an event and consumes from the subscriber microservice
+
+![materialized_view_pattern](/diagrams/materialized_view_pattern.png)
+
+![drawbacks_materialized_view_pattern](/diagrams/drawbacks_materialized_view_pattern.png)
+
+&nbsp;
+
+---
+
+&nbsp;
+
+> <b>Nishant: </b>With Materialized View Pattern , we are deviating from bounded context data pattern and also doing duplication of data in shopping cart? Can you please help this explain
+
+> <b>Mehmet: </b>Yes data will be duplicate due to gain performant query operations and decrease latency of query request from client. Every architecture decision has pros and cons. So this should pick when your use case is fit of this pattern.
+
+&nbsp;
+
+---
+
+&nbsp;
+
+- <b>CQRS Design Pattern</b>
+  - CQRS Design Pattern
+  - Stands for Command and Query Responsibility Segregation
+  - Applications need both working for complex join queries and also perform CRUD operations
+  - Reading and writing database has different approaches
+  - Using no-sql for reading and using relational database for crud operations
+  - Read-incentive application
+  - Commands performs update data
+  - Queries performs read data
+  - Commands should be actions with task-based operations
+  - Queries is never modifying the database
+  - Isolate Commands and Queries
+  - Isolate Commands and Queries
+  - Read and Write database with 2 database
+  - Materialized view pattern is good example to implement reading databases
+- [<b>Instagram Database Architecture</b>](https://arunabhdas.medium.com/infrastructure-scaling-case-study-instagram-5dd46a8d2974)
+  - Uses two database systems for different use cases
+  - Relational database - PostgreSQL and the other is no-sql database - Cassandra
+  - Uses no-sql Cassandra database for user stories
+  - Uses relational PostgreSQL database for User Information bio update
+
+![cqrs_sync_database](/diagrams/cqrs_sync_database.png)
+
+- <b>How to Sync Databases with CQRS?</b>
+  - Event-Driven Architecture
+  - Publish an update event with using message broker systems
+  - Consume by the read database and sync data
+  - Read database eventually synchronizes with the write database
+  - Read database from replicas of write database with applying Materialized view pattern
+
+![event_sourcing_pattern](/diagrams/event_sourcing_pattern.png)
+
+- [<b>Event Sourcing Pattern</b>](https://medium.com/design-microservices-architecture-with-patterns/event-sourcing-pattern-in-microservices-architectures-e72bf0fc9274)
+  - CQRS with Event Sourcing Pattern
+  - Source-of-truth events database
+  - Materialized views of the data with denormalized tables
+  - Publish an update event with using message broker systems
+  - Consume by the read database and sync data Materialized view pattern
+  - Read database eventually synchronizes with the write database
+  - Changing to data save operations
+  - Save all events into database with sequential ordered of data events
+  - Append each change to a sequential list of events
+  - Event Store becomes the source-of-truth for the data
+  - Publish/subscribe pattern with publish event
+  - Replay events to build latest status of data
+
+&nbsp;
+
+---
+
+&nbsp;
+
+> <b>Hector: </b>The eventbus can be a message broker like RabbitMQ or Kafka ? Can these brokers guarantee the order in which messages are consumed and projected to the read database?
+
+> <b>Mehmet: </b>Yes event buses can be a message brokers according to their usages.
+>
+> FIFO is an option that can be configure for most of the message broker systems, but it becomes with cost, slowness and also loose the power of high throughput with high scalability.
+>
+> For example in Kafka, when you publish a message to kafka, it can write the message to different partitions and those can consume different times. So if you would like to exact FIFO then you need to rely on 1 broker for all messaging, of course they can also provide some enterprise support for FIFO cluster but the idea is you will loose the power of distributed messaging architecture.
+>
+> https://stackoverflow.com/questions/62450323/how-to-configure-kafka-to-behave-like-a-fifo-queue
+>
+> https://people.cs.rutgers.edu/~pxk/417/notes/kafka.html
+>
+> https://blog.softwaremill.com/does-kafka-really-guarantee-the-order-of-messages-3ca849fd19d2
+
+&nbsp;
+
+---
+
+&nbsp;
+
+> <b>Raghavendra Prasad: </b>In CQRS pattern, using materialized view, we talked about using event bus to synchrous read and write databases, in this scenario, can we have read and write databases of different types, ex: read db is cassandra, write is : Oracle or MSSQL? If yes, how we can sync data between two different types of data and do we need read and write db's to have same schema to have the sync?
+
+> <b>Mehmet: </b>Yes it can be different databases both no-sql and relational databases. There is no same schema.
+>
+> Sync will be perform by event bus. Once write database has changed, it can be raise an event, and this will consumed by a service that is go and write to read database accordingly.
+>
+> This operation also handled by batch operations at nights, so this will come with eventual consistency theorem.
+
+&nbsp;
+
+---
+
+&nbsp;
+
+- <b>Eventual Consistency Principle</b>
+  - CQRS with Event Sourcing Pattern
+  - For systems that prefer high availability to instant consistency
+  - Become consistent after a certain time
+  - Does not guarantee instant consistency
+  - Consider the "consistency level“
+  - Strict consistency or Eventual consistency
 
 &nbsp;
 
