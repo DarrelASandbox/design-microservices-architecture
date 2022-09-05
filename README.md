@@ -23,6 +23,9 @@
         <li><a href="#api-gateways">API Gateways</a></li>
         <li><a href="#backends-for-frontends-pattern-bff">Backends for Frontends Pattern (BFF)</a></li>
         <li><a href="#asynchronous-message-based-communication">Asynchronous Message-Based Communication</a></li>
+        <li><a href="#kafka-architecture">Kafka Architecture</a></li>
+        <li><a href="#rabbitmq-architecture">RabbitMQ Architecture</a></li>
+        <li><a href="#scaling">Scaling</a></li>
       </ol>
     </li>
 </details>
@@ -287,6 +290,7 @@ function place_order()
 ## Microservices Architecture
 
 - [Medium - Microservices Architecture](https://medium.com/design-microservices-architecture-with-patterns/microservices-architecture-2bec9da7d42a)
+- [microservices.io](https://microservices.io/)
 - <b>What are Microservices?</b>
   - Small services
   - Running in its own process
@@ -911,6 +915,132 @@ function place_order()
 &nbsp;
 
 ![publish_subscribe_design_pattern](/diagrams/publish_subscribe_design_pattern.png)
+
+&nbsp;
+
+---
+
+&nbsp;
+
+### Kafka Architecture
+
+- <b>What is Apache Kafka?</b>
+  - Open-source event streaming platforms
+  - Horizontally scalable, distributed, and fault-tolerant
+  - Distributed publish-subscribe
+  - Event-driven Architecture
+  - Topic Messages
+  - ZooKeeper sync
+  - Topics, Partitions, Brokers, Producer, Consumer & Zookeeper
+- <b>Benefits</b>
+  - Reliability, Scalability, Durability, Performance
+  - Built-in partitioning, replication and fault -tolerance
+- <b>Use Cases</b>
+  - Messaging
+  - Metrics
+  - Log Aggregation
+  - Stream Processing
+  - Activity Tracking
+  - Event Sourcing
+
+![apache_kafka](/diagrams/apache_kafka.png)
+
+- <b>Topic, Partitions, Offset and Replication Factor</b>
+
+![kafka_components](/diagrams/kafka_components.png)
+
+- <b>Kafka Brokers - Kafka Cluster</b>
+  - Data replication, fault tolerance, and high availability of your Kafka cluster
+  - Multiple brokers to maintain load balance
+- <b>Zookeeper</b>
+  - Manage and maintenances
+  - Coordinating Kafka broker
+  - Kafka Cluster master-less architecture
+  - Follows the brokers in the cluster
+  - Takes care about broker lifecycle
+
+![kafka_cluster_architecture](/diagrams/kafka_cluster_architecture.png)
+
+- <b>Core APIs</b>
+  - <b>Producers API: </b>Producers push data to brokers
+  - <b>Consumer API: </b>Subscribe to topics and process the streams of data
+  - <b>Streams API: </b>Transforming the input streams to output streams
+  - <b>Connect API: </b>Configure connectors to move data into Kafka or from Kafka
+
+![apache_kafka_core_apis](/diagrams/apache_kafka_core_apis.png)
+
+&nbsp;
+
+---
+
+&nbsp;
+
+### RabbitMQ Architecture
+
+- <b>What is RabbitMQ</b>
+  - Message Queue System
+  - Event-Driven Architecture
+  - Apache Kafka, Msmq, Microsoft Azure Service Bus, Kestrel, ActiveMQ
+
+![rabbitmq](/diagrams/rabbitmq.png)
+
+- <b>Main Components</b>
+
+![rabbitmq_main_components](/diagrams/rabbitmq_main_components.png)
+
+- <b>Queue Properties</b>
+  - Name
+  - Durable
+  - Exclusive
+  - AutoDelete
+
+![rabbitmq_queue_properties](/diagrams/rabbitmq_queue_properties.png)
+
+- <b>Exchange Types</b>
+  - Direct
+  - Topic
+  - Fanout
+  - Header
+
+![rabbitmq_exchange_types](/diagrams/rabbitmq_exchange_types.png)
+
+&nbsp;
+
+![topic_and_fanout_exchange_types](/diagrams/topic_and_fanout_exchange_types.png)
+
+- <b>Architecture</b>
+  - Producer can only send messages to an exchange
+  - Exchanges control the routing of messages
+  - RabbitMQ uses a push model
+  - Distribute messages individually and quickly
+
+&nbsp;
+
+---
+
+&nbsp;
+
+### Scaling
+
+- [<b>Scale Cube</b>](https://microservices.io/articles/scalecube.html)
+  - <b>X-Axis: </b>Horizontal Duplication and Cloning of services and data
+  - <b>Y-Axis: </b>Functional Decomposition and Segmentation - Microservices
+  - <b>Z-Axis: </b>Service and Data Partitioning along Customer Boundaries - Shards/Pods
+
+![scale_cube](/diagrams/scale_cube.png)
+
+- <b>Stateless and Stateful Application Horizontal Scaling</b>
+  - Scalability of our architecture to handle more number of concurrent requests
+  - Vertical scaling "scale up" is increase the hardware resources for exiting servers
+  - Horizontal Scaling "scaling out" is splitting the load between different servers
+  - If the server have a state or not ?
+- <b>How to Scale Stateful Application Horizontal?</b>
+  - CAP Theorem
+  - Consistency level
+  - Strict consistency
+  - Eventual consistency
+  - Spliting database servers
+  - Database Sharding
 
 &nbsp;
 
